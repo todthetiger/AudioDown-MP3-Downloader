@@ -1,70 +1,53 @@
 /**
- * This background script (service worker) handles tasks that need to persist,
- * like listening for download requests.
+ * This content script is injected into the webpage to find MP3 links.
  */
 
-// Listen for messages from other parts of the extension (e.g., the popup)
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    // Check if the message is a request to download an MP3
-    if (request.action === 'downloadMp3') {
-        if (request.url) {
-            console.log(`Background: Received download request for ${request.url}`);
-            
-            // Use the chrome.downloads API to download the file
-            chrome.downloads.download({
-                url: request.url,
-                // Suggest a filename. The browser may still prompt the user.
-                filename: request.filename || 'download.mp3' 
-            }, (downloadId) => {
-                if (chrome.runtime.lastError) {
-                    console.error(`Download failed: ${chrome.runtime.lastError.message}`);
-                } else {
-                    console.log(`Download started with ID: ${downloadId}`);
-                }
-            });
+/**
+ * Finds all MP3 links on the current page.
+ * It looks for <a> tags linking to .mp3 files and <audio> tags with .mp3 sources.
+ * @returns {string[]} A list of unique MP3 URLs.
+ */
+function findAllMp3Links() {
+    console.log("MP3 Downloader: Searching for MP3s on the page.");
+    const mp3Urls = new Set(); // Use a Set to avoid duplicate URLs
+
+    // 1. Find all <audio> tags and get their src
+    const audioElements = document.querySelectorAll('audio');
+    audioElements.forEach(audio => {
+        if (audio.src && audio.src.endsWith('.mp3')) {
+            // Ensure the URL is absolute
+            mp3Urls.add(new URL(audio.src, document.baseURI).href);
         }
-        // It's good practice to send a response, even if it's just to acknowledge.
-        sendResponse({ status: 'Download initiated' }); 
-    }
-     // Return true to indicate you wish to send a response asynchronously
-    return true;
-});
-
-// This function creates placeholder icons when the extension is installed.
-// This is so you don't have to create image files manually.
-function createInitialIcons() {
-  const icons = [
-    { size: 16, path: 'images/icon16.png' },
-    { size: 48, path: 'images/icon48.png' },
-    { size: 128, path: 'images/icon128.png' }
-  ];
-
-  icons.forEach(iconInfo => {
-    const canvas = new OffscreenCanvas(iconInfo.size, iconInfo.size);
-    const context = canvas.getContext('2d');
-    
-    // Background
-    context.fillStyle = '#4f46e5'; // Indigo color
-    context.fillRect(0, 0, iconInfo.size, iconInfo.size);
-    
-    // Simple "MP3" text
-    context.fillStyle = 'white';
-    context.font = `${iconInfo.size * 0.5}px sans-serif`;
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    context.fillText('MP3', iconInfo.size / 2, iconInfo.size / 2);
-
-    canvas.convertToBlob().then(blob => {
-       // Note: In a real extension, you would package these files.
-       // For testing, this demonstrates how they could be generated.
-       // We can't write files, so this is illustrative. You'll need to create these files.
-       console.log(`Generated icon data for ${iconInfo.path}`);
+        // Also check inside <source> tags within the <audio> element
+        const sourceElements = audio.querySelectorAll('source');
+        sourceElements.forEach(source => {
+            if (source.src && source.src.endsWith('.mp3')) {
+                mp3Urls.add(new URL(source.src, document.baseURI).href);
+            }
+        });
     });
-  });
+
+    // 2. Find all <a> (anchor) tags pointing directly to .mp3 files
+    const anchorElements = document.querySelectorAll('a');
+    anchorElements.forEach(anchor => {
+        if (anchor.href && anchor.href.endsWith('.mp3')) {
+            mp3Urls.add(new URL(anchor.href, document.baseURI).href);
+        }
+    });
+    
+    console.log(`MP3 Downloader: Found ${mp3Urls.size} unique MP3(s).`);
+    return Array.from(mp3Urls); // Convert the Set to an array
 }
 
-// Run this when the extension is first installed.
-chrome.runtime.onInstalled.addListener(() => {
-    console.log('MP3 Downloader extension installed.');
-    // createInitialIcons(); // You'd call this, but for now, you must create the files.
+/**
+ * Listen for messages from the popup script.
+ */
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'findMp3s') {
+        const mp3s = findAllMp3Links();
+        // Send the list of found MP3s back to the popup
+        sendResponse({ mp3s: mp3s });
+    }
+    // Return true to indicate that we will send a response asynchronously
+    return true; 
 });
