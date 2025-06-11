@@ -68,4 +68,3 @@ chrome.runtime.onInstalled.addListener(() => {
     console.log('MP3 Downloader extension installed.');
     // createInitialIcons(); // You'd call this, but for now, you must create the files.
 });
-background.js
