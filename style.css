@@ -1,0 +1,115 @@
+/*
+ * This file contains the necessary Tailwind CSS classes and base styles
+ * for the AudioDown extension popup, generated for local use.
+ */
+
+/* Basic Reset and Font/Color Defaults */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    width: 350px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0;
+}
+
+/* Keyframes for the spinner animation */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* NEW: Styles for form elements */
+.form-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: 0.25rem;
+    border: 1px solid #cbd5e1;
+    background-color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+}
+
+.form-checkbox:checked {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+}
+
+.form-checkbox:checked::after {
+    content: '✔';
+    position: absolute;
+    color: white;
+    font-size: 0.85rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* Class definitions */
+.animate-spin { animation: spin 1s linear infinite; }
+/* UPDATED: Button colors to use the new Google Blue */
+.bg-google-blue { background-color: #4285f4; }
+.hover\:bg-google-blue-dark:hover { background-color: #3367d6; }
+.bg-green-500 { background-color: #22c55e; }
+.hover\:bg-green-600:hover { background-color: #16a34a; }
+.bg-white { background-color: #ffffff; }
+.border { border-width: 1px; }
+.border-b-2 { border-bottom-width: 2px; }
+.border-slate-200 { border-color: #e2e8f0; }
+.border-slate-300 { border-color: #cbd5e1; }
+.border-indigo-600 { border-color: #4f46e5; }
+.border-transparent { border-color: transparent; }
+.rounded-md { border-radius: 0.375rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-full { border-radius: 9999px; }
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.flex-shrink-0 { flex-shrink: 0; }
+.font-bold { font-weight: 700; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.h-8 { height: 2rem; }
+.w-8 { width: 2rem; }
+.w-full { width: 100%; }
+.hidden { display: none; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.max-h-64 { max-height: 16rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.ml-2 { margin-left: 0.5rem; }
+.ml-3 { margin-left: 0.75rem; }
+.mr-3 { margin-right: 0.75rem; }
+.overflow-y-auto { overflow-y: auto; }
+.p-3 { padding: 0.75rem; }
+.p-6 { padding: 1.5rem; }
+.pt-4 { padding-top: 1rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; } /* UPDATED: Smaller button padding */
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
+.space-y-3 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.75rem; }
+.space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5rem; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+/* UPDATED: Smaller title size */
+.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.text-slate-500 { color: #64748b; }
+.text-slate-800 { color: #1e293b; }
+.text-slate-900 { color: #0f172a; }
+.text-white { color: #ffffff; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+.transition-transform { transition-property: transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+.hover\:scale-105:hover { transform: scale(1.05); }
+.focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+.focus\:ring-2:focus { box-shadow: 0 0 0 2px #a5b4fc; } /* Simplified focus ring */
