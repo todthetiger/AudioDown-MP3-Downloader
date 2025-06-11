@@ -4,47 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AudioDown</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* Apply rounded corners and a font to the whole popup */
-        body {
-            width: 350px;
-            font-family: 'Roboto', sans-serif;
-            border-radius: 8px; /* Rounded corners for the application window */
-            overflow: hidden; /* Ensures content respects the rounded corners */
-        }
-        .animate-spin {
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-slate-50 text-slate-800 p-6 text-center">
 
     <div class="space-y-6">
-        <h1 class="text-2xl font-bold text-slate-900">AudioDown</h1>
+        <h1 class="text-xl font-bold text-slate-900">AudioDown</h1>
 
-        <!-- The main action button -->
-        <button id="scanPageBtn" class="w-full inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-lg font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-transform hover:scale-105">
+        <button id="scanPageBtn" class="w-full inline-flex justify-center rounded-md border border-transparent bg-google-blue px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-google-blue-dark focus:outline-none focus:ring-2 transition-transform hover:scale-105">
             Scan Current Page for Audio
         </button>
         
-        <!-- Results Section - Completely hidden until the button is clicked -->
         <div id="resultsContainer" class="hidden pt-4">
             <hr class="border-slate-300 mb-4">
             <div id="loader" class="hidden flex justify-center items-center py-4">
                 <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
                 <p class="ml-3 text-base">Scanning page...</p>
             </div>
-            <div id="audioList" class="space-y-3 max-h-64 overflow-y-auto text-left">
-                <!-- Audio items will be injected here by JavaScript -->
+            
+            <div id="resultsHeader" class="hidden flex items-center justify-between mb-2">
+                <div class="flex items-center">
+                    <input type="checkbox" id="selectAllCheckbox" class="form-checkbox">
+                    <label for="selectAllCheckbox" class="ml-2 text-sm font-medium">Select All</label>
+                </div>
+                <button id="downloadSelectedBtn" class="rounded-md bg-green-500 px-3 py-1.5 text-sm font-semibold text-white hover:bg-green-600 transition-all">
+                    Download Selected
+                </button>
             </div>
+
+            <div id="audioList" class="space-y-3 max-h-64 overflow-y-auto text-left">
+                </div>
             <p id="noResults" class="text-center text-slate-500 py-4 hidden text-base">No audio files found on this page.</p>
         </div>
     </div>
